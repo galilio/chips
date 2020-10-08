@@ -1,0 +1,33 @@
+- name: "Enable EPEL"
+  yum:
+    name:
+    - epel-release
+    state: present
+- name: "Install Python"
+  yum:
+    name:
+    - python36
+    - python3-devel
+
+- name: "Upgrade pip first"
+  shell: pip3 install --upgrade pip --index-url http://192.178.78.20:8081/repository/mypypi-group/simple --trusted-host 192.178.78.20
+
+- name: "Install chipmunks package"
+  shell: pip3 install --upgrade chipmunks --index-url http://192.178.78.20:8081/repository/mypypi-group/simple --trusted-host 192.178.78.20
+
+- name: "Copy Config File"
+  copy:
+    src: chips-agent.conf
+    dest: /etc/chips-agent.conf
+
+- name: "Copy Systemd Service File"
+  copy:
+    src: agent.service
+    dest: /etc/systemd/system/agent.service
+
+- name: "Enable & Start Agent"
+  systemd:
+    name: agent.service
+    state: restarted
+    enabled: true
+    daemon_reload: true

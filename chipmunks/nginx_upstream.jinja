@@ -1,0 +1,6 @@
+# chip-generated
+upstream {{ svc.name }} {
+    {%- for x in  svc.hosts %}
+    server {{x.ip}}:{{x.port}};
+    {%- endfor %}
+}

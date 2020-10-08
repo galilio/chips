@@ -1,0 +1,13 @@
+[Unit]
+Description=chipmunks service
+After=docker.target
+  
+[Service]
+Type=simple
+LimitNOFILE=65536
+ExecStart=/usr/local/bin/munks agent -c /etc/chips-agent.conf
+Restart=on-abort
+TimeoutSec=600
+  
+[Install]
+WantedBy=multi-user.target
